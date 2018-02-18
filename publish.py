@@ -16,6 +16,10 @@ def push_notification(message_header, message_body):
             Subject="[IMPORTANT] Trading Notification",
             Message = message_header + '\n' + message_body
         )
+        #test
+        print 'Pushing notification'
+        print 'message is:\n %s' % message_header + '\n' + message_body
+        print 'response is: %s' % response  
     except:
         print 'Error publishing the message'
         print response
