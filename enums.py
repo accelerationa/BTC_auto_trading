@@ -1,6 +1,4 @@
-from enum import Enum
-
-class State(Enum):
+class State():
     ZERO_PERCENTS = 0
     THREE_PERCENTS = 0.03
     THREE_POINT_FIVE_PERCENTS = 0.035
@@ -18,6 +16,9 @@ class State(Enum):
     NINE_POINT_FIVE_PERCENTS = 0.095
     TEN_PERCENTS = 0.1
 
-class Sign(Enum):
+class Sign():
     POSITIVE = 1
     NEGATIVE = -1
+
+class CoinType:
+    BTC = 'BTC'

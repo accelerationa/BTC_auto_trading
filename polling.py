@@ -2,25 +2,26 @@ import boto3
 import requests
 import json
 from exception import UnableToRetriveDataException
+from maps import UrlMaps
+from logs import Logs
+import os
+import logging
 
 
-def poll_binance_data():
+
+def poll_data(coin_type, platform):
+    if not os.path.exists("./logs"):
+        os.makedirs("./logs")
+    logging.basicConfig(filename='logs/' + Logs.get_log_file_name(),level=logging.INFO)
     try:
-        url = "https://www.binance.com/api/v1/depth?limit=10&symbol=BTCUSDT"
+        url = UrlMaps[platform][coin_type]
         response = requests.request("GET", url)
         json_data = json.loads(response.text)
+    except KeyError:
+        print 'Error: unexpected key'
+        logging.error('Error: unexpected key')
+        raise
     except:
-        print 'Error: unable to retrive data from Binance'
-        raise UnableToRetriveDataException()
-    return json_data
-
-
-def poll_poloniex_data():
-    try:
-        url = "https://poloniex.com/public?command=returnOrderBook&currencyPair=USDT_BTC&depth=10"
-        response = requests.request("GET", url)
-        json_data = json.loads(response.text)
-    except:
-        print 'Error: unable to retrive data from Poloniex'
-        raise UnableToRetriveDataException()
+        print 'Error: unable to retrive data from ' + platform
+        raise UnableToRetriveDataException('Error: unable to retrive data from ' + platform)
     return json_data

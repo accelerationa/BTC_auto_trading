@@ -1,11 +1,17 @@
 import boto3
+from logs import Logs
+import logging
+import os
+
 
 # Create an SNS client
 def push_notification(message_header, message_body):
+    if not os.path.exists("./logs"):
+        os.makedirs("./logs")
+    logging.basicConfig(filename='logs/' + Logs.get_log_file_name(),level=logging.INFO)
+
     client = boto3.client(
         "sns",
-        aws_access_key_id="AKIAJJSMDL6KX23QYRUQ",
-        aws_secret_access_key="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",
         region_name="us-west-2"
     )
 
@@ -16,11 +22,11 @@ def push_notification(message_header, message_body):
             Subject="[IMPORTANT] Trading Notification",
             Message = message_header + '\n' + message_body
         )
-        #test
         print 'Pushing notification'
+        logging.info('Pushing notification')
         print 'message is:\n %s' % message_header + '\n' + message_body
         print 'response is: %s' % response  
     except:
         print 'Error publishing the message'
-        print response
+        logging.error('Error publishing the message')
         pass
